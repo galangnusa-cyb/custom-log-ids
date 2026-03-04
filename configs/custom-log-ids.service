@@ -1,0 +1,18 @@
+[Unit]
+Description=Custom Log IDS - SSH Bruteforce Detector
+After=network.target ssh.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/home/niko/custom-log-ids
+ExecStart=/usr/bin/python3 /home/niko/custom-log-ids/src/ids_bruteforce.py --mode follow --log /var/log/auth.log --out /var/log/custom_ids/ids_alerts.json --threshold 8 --window 120 --cooldown 300
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
